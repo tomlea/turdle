@@ -18,7 +18,7 @@ end
 
 post '/g/:game' do
   @game = Game.load(params[:game])
-  guess = params[:guess]
+  guess = params[:guess].downcase
   @game.guess(guess).to_json
 end
 
@@ -48,7 +48,7 @@ class Game
   end
 
   def self.create
-    new(words.sample)
+    new(good_words.sample)
   end
 
   def to_blob
@@ -76,6 +76,10 @@ class Game
 
   def self.load(blob)
     new(blob.decrypt)
+  end
+
+  def self.good_words
+    File.read(File.expand_path('good-words.txt', __dir__)).split("\n")
   end
 
   def self.words
