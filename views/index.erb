@@ -1,1 +1,58 @@
-<h1>Hello</h1>
+<div id=main></div>
+<script type="module">
+  import { html, render } from 'https://unpkg.com/htm/preact/index.mjs?module'
+  import { useState } from 'https://unpkg.com/preact/hooks/dist/hooks.module.js?module'
+
+  function App() {
+    return html`<h1>Turdle</h1><${Guesser} />`
+  }
+
+  function GuessBox({onGuess}) {
+    const handleSubmit = (event) => {
+      event.preventDefault()
+      const txtBox = event.target.querySelector('input[type=text]')
+      onGuess(txtBox.value)
+      txtBox.value = ""
+    }
+
+    return html`
+      <form onSubmit=${handleSubmit}>
+        <input type=text length=6 autofocus />
+        <input type=submit value=Go />
+      </form>`
+  }
+
+  function Guesser() {
+    const [guesses, setGuesses] = useState([])
+    const [win, setWin] = useState(false)
+
+    async function handleGuess(guess) {
+      const formData = new FormData()
+      formData.append("guess", guess)
+      const response = await fetch(document.location.href, {method: "POST", body: formData})
+      const result = await response.json()
+      setWin(result.win)
+      setGuesses([...guesses, result])
+    }
+
+    return html`
+      <ol>
+        ${guesses.map((g) => html`<li class=result-row><${Result} result=${g} /></li>`)}
+      </ol>
+      ${!win && html`<${GuessBox} onGuess=${handleGuess} />`}
+      ${win && html`<h2 class=win>Congratulations!</h2><p><a href="/">New game?</a></p>`}
+    `
+  }
+
+  function Result({result: {word, results, error, win}}) {
+     if (error) {
+       return error
+     }
+     const letters = word.split("")
+     return letters.map((l, i) => html`<span class=${results[i]}>${l}</span>`)
+  }
+
+  render(html`<${App} />`, document.getElementById('main'));
+</script>
+
+

@@ -8,7 +8,21 @@ html {
 }
 
 body {
-  max-width: 800px;
+  max-width: 300px;
   background: #fff;
   margin: 20px auto;
+  padding: 20px;
 }
+
+.result-row span {
+  display: inline-block;
+  margin: 0.2em;
+  width: 1em;
+  text-align: center;
+  border: 1px solid #333;
+  padding: 0.2em;
+}
+
+.result-row span.y { background-color: #afa }
+.result-row span.n { background-color: #ccc }
+.result-row span.m { background-color: #ffa }
