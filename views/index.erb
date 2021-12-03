@@ -36,11 +36,34 @@
     }
 
     return html`
+      <${Accumulator} guesses=${guesses}/>
+      <p>I'm thinking of a 5 letter word, can you guess what it is?</p>
       <ol>
         ${guesses.map((g) => html`<li class=result-row><${Result} result=${g} /></li>`)}
       </ol>
       ${!win && html`<${GuessBox} onGuess=${handleGuess} />`}
       ${win && html`<h2 class=win>Congratulations!</h2><p><a href="/">New game?</a></p>`}
+    `
+  }
+
+  function Accumulator({guesses}) {
+    const letters = 
+      Array.from({ length: 26 }, (_, i) => String.fromCharCode('a'.charCodeAt(0) + i));
+
+    const knoledge = {}
+    guesses.forEach(({word, results}) => {
+      if(results) {
+        word.split('').forEach((l, index) => {
+          const res = results[index]
+          knoledge[l] = res
+        })
+      }
+    })
+
+    return html`
+      <ul class=accumulator>
+        ${letters.map((l) => html`<li class=${knoledge[l] || 'unknown'}>${l}</li>`)}
+      </ul>
     `
   }
 

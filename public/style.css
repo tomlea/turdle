@@ -21,8 +21,34 @@ body {
   text-align: center;
   border: 1px solid #333;
   padding: 0.2em;
+  font-size: 1.5rem;
 }
 
 .result-row span.y { background-color: #afa }
 .result-row span.n { background-color: #ccc }
 .result-row span.m { background-color: #ffa }
+
+.accumulator li.y,
+.accumulator li.m { background-color: #afa }
+
+.accumulator li.n { background-color: #ccc; color: #666; }
+.accumulator li.unknown { background-color: #eee }
+
+ul.accumulator {
+  padding: 0;
+}
+
+.accumulator li {
+  list-style: none;
+  display: inline-block;
+  padding: 0.2em;
+  margin: 0.2em;
+  border: 1px solid #333;
+  width: 1em;
+  text-align: center;
+}
+
+.result-row span,
+.accumulator li {
+  text-transform: uppercase;
+}
