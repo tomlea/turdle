@@ -16,6 +16,12 @@ get '/g/:game' do
   erb :index
 end
 
+get '/w/:word' do
+  game = Game.new(params[:word])
+  redirect "/g/#{game.to_blob}"
+  erb :index
+end
+
 post '/g/:game' do
   @game = Game.load(params[:game])
   guess = params[:guess].downcase
